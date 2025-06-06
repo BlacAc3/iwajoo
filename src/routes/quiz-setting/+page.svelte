@@ -1,5 +1,5 @@
 <script>
-    import { onMount, onDestroy } from "svelte"; // Import lifecycle functions
+    import { onMount } from "svelte";
     import {
         MoveLeft,
         Brain,
@@ -37,40 +37,33 @@
     function handleScroll() {
         if (!backButton) return; // Ensure element exists
 
+        // Calculate originalOffsetTop the first time the scroll handler runs
+        // after the element is rendered and available via bind:this.
+        // This makes the initial position calculation more robust.
+        if (originalOffsetTop === 0) {
+            originalOffsetTop =
+                backButton.getBoundingClientRect().top + window.scrollY;
+        }
+
         // The button should be fixed when the user scrolls down past its original position
         // such that its original top would be at or above the desired fixed position (top-5, which is 20px).
         // It should be relative otherwise.
-        // We become fixed when window.scrollY is greater than or equal to the originalOffsetTop minus the fixed 'top' value (5px from top-5, which translates to 20px margin).
-        // Let's use a threshold around the element's initial top margin. The original class 'mt-5' adds 20px margin.
-        // So, its original top position is likely 20px + some parent offset. originalOffsetTop captures this.
-        // It should become fixed when window.scrollY exceeds its original position minus the fixed offset (20px).
-        const fixedThreshold = originalOffsetTop - 20; // Compare scrollY to the point where the element's original top would be at the fixed position's top
+        // The threshold is calculated as originalOffsetTop minus the desired fixed 'top' value (20px for top-5).
+        const fixedThreshold = originalOffsetTop - 20;
 
         isFixed = window.scrollY >= fixedThreshold;
     }
 
     onMount(() => {
-        // Calculate originalOffsetTop when the element is in its natural (relative) position.
-        // We need to ensure the element is rendered before calculating.
-        // Using requestAnimationFrame ensures the DOM is updated after potential initial render.
+        // Add the scroll listener
+        window.addEventListener("scroll", handleScroll);
+
+        // Call handleScroll once immediately to calculate originalOffsetTop
+        // and set the initial isFixed state based on current scroll position.
+        // Use requestAnimationFrame to ensure bind:this={backButton} is available
+        // and its initial position is correctly calculated after render.
         requestAnimationFrame(() => {
-            if (backButton) {
-                // Ensure it's in the relative state to get the correct original position
-                const wasFixed = isFixed;
-                isFixed = false; // Temporarily set to relative
-                requestAnimationFrame(() => {
-                    // Wait for potential DOM update after state change
-                    originalOffsetTop =
-                        backButton.getBoundingClientRect().top + window.scrollY;
-
-                    // Set the initial state based on the current scroll position
-                    const fixedThreshold = originalOffsetTop - 20;
-                    isFixed = window.scrollY >= fixedThreshold;
-
-                    // Add the scroll listener
-                    window.addEventListener("scroll", handleScroll);
-                });
-            }
+            handleScroll();
         });
 
         // Cleanup the event listener when the component is destroyed
@@ -86,25 +79,26 @@
     <a
         bind:this={backButton}
         class="{isFixed
-            ? 'fixed top-5 left-10 md:left-20 z-50'
-            : 'relative mt-5 ml-10 md:ml-20'} flex self-start p-2 hover:shadow-xl transition duration-300 border border-gray-300 bg-blue-300 rounded-lg w-fit gap-2 text-gray-700 hover:text-blue-600"
+            ? 'fixed top-5 left-4 md:left-20 z-50'
+            : 'relative mt-5 ml-4 md:ml-20'} flex self-start p-2 hover:shadow-xl transition duration-300 border border-gray-300 bg-blue-300 rounded-lg w-fit gap-2 text-gray-700 hover:text-blue-600"
         href="/"
     >
         <MoveLeft class="w-5 h-5" />
         <p class="text-sm font-medium">Back to Home</p>
     </a>
     <div
-        class="max-w-4xl mx-auto bg-gray-100 border-0 border-gray-100 p-8 rounded-xl shadow-2xl mt-5 w-full"
+        class="max-w-4xl mx-auto bg-gray-100 border-0 border-gray-100 p-6 sm:p-8 rounded-xl shadow-2xl mt-5 w-full"
     >
-        <h2 class="text-3xl font-bold mb-4 text-center">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-4 text-center">
             Choose your quiz experience
         </h2>
-        <p class="text-lg text-gray-600 mb-10 text-center max-w-2xl mx-auto">
+        <p
+            class="text-base sm:text-lg text-gray-600 mb-8 md:mb-10 text-center max-w-2xl mx-auto"
+        >
             Select how you want to experience your privacy knowledge challenge
             before we begin!
         </p>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Classic Mode Card -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             <button
                 class="border rounded-xl p-6 flex flex-col items-start text-center shadow-sm hover:shadow-md transition duration-300 cursor-pointer relative overflow-hidden
                 {selectedMode !== 'classic'
@@ -115,7 +109,6 @@
                     ? "background-image: radial-gradient(circle, rgba(96, 165, 250, 0.6) 1.5px, transparent 1.5px); background-size: 15px 15px; "
                     : ""}
             >
-                <!-- Icon wrapped in a blue circle -->
                 <div
                     class="rounded-full w-16 h-16 flex self-center items-center justify-center mb-4 transition duration-300
                     {selectedMode === 'classic'
@@ -135,7 +128,6 @@
                         Casual learning
                     </li>
                 </ul>
-                <!-- Popular choice label - positioned absolutely -->
                 {#if selectedMode === "classic"}
                     <div
                         class="self-center bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full"
@@ -144,7 +136,6 @@
                     </div>
                 {/if}
             </button>
-            <!-- Compliance Track Card -->
             <button
                 class="border rounded-xl p-6 flex flex-col items-start text-center shadow-sm hover:shadow-md transition duration-300 cursor-pointer relative overflow-hidden
                 {selectedMode !== 'compliance'
@@ -155,7 +146,6 @@
                     ? "background-image: radial-gradient(circle, rgba(96, 165, 250, 0.6) 1.5px, transparent 1.5px); background-size: 20px 20px; "
                     : ""}
             >
-                <!-- Icon wrapped in a blue circle -->
                 <div
                     class="rounded-full w-16 h-16 flex self-center items-center justify-center mb-4 transition duration-300
                     {selectedMode === 'compliance'
@@ -175,7 +165,6 @@
                         explanation of answers
                     </li>
                 </ul>
-                <!-- Popular choice label - positioned absolutely -->
                 {#if selectedMode === "compliance"}
                     <div
                         class="self-center bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full"
@@ -187,17 +176,19 @@
         </div>
     </div>
 
-    <!-- Timing section -->
     <div
-        class="max-w-4xl mx-auto bg-gray-100 border-0 border-gray-100 p-8 rounded-xl shadow-2xl mt-8 w-full"
+        class="max-w-4xl mx-auto bg-gray-100 border-0 border-gray-100 p-6 sm:p-8 rounded-xl shadow-2xl mt-8 w-full"
     >
-        <h2 class="text-3xl font-bold mb-4 text-center">Choose timing</h2>
-        <p class="text-lg text-gray-600 mb-10 text-center max-w-2xl mx-auto">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-4 text-center">
+            Choose timing
+        </h2>
+        <p
+            class="text-base sm:text-lg text-gray-600 mb-8 md:mb-10 text-center max-w-2xl mx-auto"
+        >
             Decide whether you want to tackle the questions under pressure or
             learn at a relaxed pace.
         </p>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Timed Quiz Card -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             <button
                 class="border rounded-xl p-6 flex gap-3 items-start shadow-sm hover:shadow-md transition h-fit duration-300 cursor-pointer relative overflow-hidden
                     {selectedTiming !== 'timed'
@@ -220,7 +211,6 @@
                     </p>
                 </div>
             </button>
-            <!-- Free Mode Card -->
             <button
                 class="border rounded-xl p-6 flex gap-3 items-start shadow-sm hover:shadow-md transition h-fit duration-300 cursor-pointer relative overflow-hidden
                     {selectedTiming !== 'free'
@@ -246,9 +236,8 @@
         </div>
     </div>
 
-    <!-- Button to proceed (placeholder) -->
     <button
-        class="mt-10 px-8 py-4 bg-blue-600 text-white text-xl font-bold rounded-xl shadow-lg hover:bg-blue-700 transition duration-300"
+        class="mt-10 px-6 py-3 sm:px-8 sm:py-4 bg-blue-600 text-white text-lg sm:text-xl font-bold rounded-xl shadow-lg hover:bg-blue-700 transition duration-300"
     >
         Start Quiz
     </button>
