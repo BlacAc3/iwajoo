@@ -5,8 +5,12 @@
 </script>
 
 <section class="py-12 px-4 sm:px-6 lg:px-8 text-center bg-gray-300">
-    <h3 class="text-3xl font-semibold text-gray-800 mb-4">{missionTitle}</h3>
-    <p class="text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto">
+    <h3 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-4">
+        {missionTitle}
+    </h3>
+    <p
+        class="text-base sm:text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto"
+    >
         {missionText}
     </p>
 </section>
