@@ -21,7 +21,7 @@
             >
             <a href="#" class="hover:text-white hover:underline">Legal Notice</a
             >
-            <a href="#" class="hover:text-white hover:underline">Iwajoo</a>
+            <a href="/" class="hover:text-white hover:underline">Iwajoo</a>
         </div>
 
         <!-- Make social links stack vertically on mobile, then horizontal on sm+ -->

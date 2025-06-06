@@ -22,10 +22,10 @@
         Africa evaluate their data protection practices and identify areas for
         improvement.
     </p>
-    <button
-        on:click={() => alert("Navigate to assessment")}
+    <a
         class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg text-lg shadow-md transition duration-300 ease-in-out mb-10 w-full sm:w-auto"
+        href="/quiz-setting"
     >
         {assessmentButtonText}
-    </button>
+    </a>
 </section>
