@@ -8,30 +8,25 @@
         Clock,
         Infinity,
     } from "@lucide/svelte";
+    // Import the object containing the stores
+    import { quizSettings } from "$lib/stores/quizSettings.svelte.js";
 
-    // State variable to track the selected mode ('classic' or 'compliance')
-    let selectedMode = "classic"; // Default to classic
+    // Destructure the individual stores from the imported object
+    const { easy, noTimeLimit } = quizSettings;
 
-    // State variable to track the selected timing ('timed' or 'free')
-    let selectedTiming = "timed"; // Default to timed
+    // Note: The 'quizSettings' object contains the 'easy' store, which determines the mode.
+    // 'true' for easy means classic, 'false' means compliance.
+    $: selectedMode = $easy ? "classic" : "compliance";
 
-    // State variable to track if the back button should be fixed
-    let isFixed = false; // Default to relative initially
+    // Reactive declaration for selected timing, reacting to the 'noTimeLimit' store.
+    $: selectedTiming = $noTimeLimit ? "free" : "timed";
+
+    let isFixed = false;
 
     // Reference to the back button element
     let backButton;
     // Variable to store the original top position relative to the document
     let originalOffsetTop = 0;
-
-    // Function to handle mode selection
-    function selectMode(mode) {
-        selectedMode = mode;
-    }
-
-    // Function to handle timing selection
-    function selectTiming(timing) {
-        selectedTiming = timing;
-    }
 
     // Function to handle scroll event
     function handleScroll() {
@@ -40,6 +35,7 @@
         // Calculate originalOffsetTop the first time the scroll handler runs
         // after the element is rendered and available via bind:this.
         // This makes the initial position calculation more robust.
+        // We only calculate this once to avoid recalculating on every scroll.
         if (originalOffsetTop === 0) {
             originalOffsetTop =
                 backButton.getBoundingClientRect().top + window.scrollY;
@@ -104,7 +100,7 @@
                 {selectedMode !== 'classic'
                     ? 'opacity-90 border-gray-300 bg-gray-100'
                     : 'opacity-100 bg-blue-100 border-blue-700'}"
-                on:click={() => selectMode("classic")}
+                on:click={() => quizSettings.easy.set(true)}
                 style={selectedMode === "classic"
                     ? "background-image: radial-gradient(circle, rgba(96, 165, 250, 0.6) 1.5px, transparent 1.5px); background-size: 15px 15px; "
                     : ""}
@@ -141,7 +137,7 @@
                 {selectedMode !== 'compliance'
                     ? 'opacity-90 border-gray-300 bg-gray-100'
                     : 'opacity-100 bg-blue-100 border-blue-700'}"
-                on:click={() => selectMode("compliance")}
+                on:click={() => quizSettings.easy.set(false)}
                 style={selectedMode === "compliance"
                     ? "background-image: radial-gradient(circle, rgba(96, 165, 250, 0.6) 1.5px, transparent 1.5px); background-size: 20px 20px; "
                     : ""}
@@ -194,7 +190,7 @@
                     {selectedTiming !== 'timed'
                     ? 'opacity-90 border-gray-300 bg-gray-100'
                     : 'opacity-100 bg-blue-100 border-blue-700'}"
-                on:click={() => selectTiming("timed")}
+                on:click={() => quizSettings.noTimeLimit.set(false)}
             >
                 <div
                     class="rounded-full w-14 h-14 flex-shrink-0 flex items-center justify-center transition duration-300
@@ -216,7 +212,7 @@
                     {selectedTiming !== 'free'
                     ? 'opacity-90 border-gray-300 bg-gray-100'
                     : 'opacity-100 bg-blue-100 border-blue-700'}"
-                on:click={() => selectTiming("free")}
+                on:click={() => quizSettings.noTimeLimit.set(true)}
             >
                 <div
                     class="rounded-full w-14 h-14 flex-shrink-0 flex items-center justify-center transition duration-300

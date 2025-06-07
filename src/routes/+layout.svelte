@@ -2,7 +2,6 @@
     let { children } = $props();
     import "../app.css";
     import { Confetti } from "svelte-confetti";
-    import { onMount } from "svelte";
 
     let showConfetti = $state(false);
 
@@ -28,14 +27,19 @@
         x={[-20, 20]}
         y={[0.1, 0.1]}
         delay={[500, 2000]}
-        duration="7000"
-        amount="400"
+        duration="3000"
+        amount="500"
         fallDistance="100vh"
     />
 {/if}
 
 <nav class="border-b-0 bg-blue-100 shadow-lg">
-    <div class="p-6 px-18 text-2xl md:px-8 font-bold text-blue-800">Iwajoo</div>
+    <button
+        onclick={() => (window.location.href = "/")}
+        class="p-6 px-18 cursor-pointer text-2xl md:px-8 font-bold text-blue-800"
+    >
+        Iwajoo
+    </button>
 </nav>
 
 {@render children()}
