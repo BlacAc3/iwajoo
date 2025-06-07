@@ -385,13 +385,18 @@
     }
 </script>
 
-<div class="container mx-auto p-6 min-h-screen">
-    <h1 class="text-3xl font-bold mb-8 text-center">Admin Dashboard</h1>
+<!-- Apply responsive padding: p-4 on small screens, p-6 on larger -->
+<div class="container mx-auto sm:p-6 p-4 min-h-screen">
+    <!-- Apply responsive text size: text-2xl on small screens, text-3xl on larger -->
+    <h1 class="sm:text-3xl text-2xl font-bold mb-8 text-center">
+        Admin Dashboard
+    </h1>
 
     <!-- Tab Navigation -->
     <div class="flex gap-4 justify-center mb-8">
+        <!-- Apply responsive padding and text size for buttons -->
         <button
-            class="py-3 px-6 text-lg font-semibold hover:cursor-pointer rounded-2xl transition duration-300
+            class="sm:py-3 sm:px-6 py-2 px-4 sm:text-lg text-base font-semibold hover:cursor-pointer rounded-2xl transition duration-300
                    {selectedTab === 'add'
                 ? 'bg-blue-600 text-white shadow-lg'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}"
@@ -406,8 +411,9 @@
         >
             Add Questions
         </button>
+        <!-- Apply responsive padding and text size for buttons -->
         <button
-            class="py-3 px-6 hover:cursor-pointer text-lg font-semibold rounded-2xl transition duration-300
+            class="sm:py-3 sm:px-6 py-2 px-4 hover:cursor-pointer sm:text-lg text-base font-semibold rounded-2xl transition duration-300
                    {selectedTab === 'view'
                 ? 'bg-blue-600 text-white shadow-lg'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}"
@@ -422,8 +428,9 @@
     </div>
 
     <!-- Tab Content -->
+    <!-- Apply responsive padding: p-4 on small screens, p-6 on larger -->
     <div
-        class="max-w-3xl mx-auto bg-blue-200 rounded-xl shadow-2xl opacity-80 p-6"
+        class="max-w-3xl mx-auto bg-blue-200 rounded-xl shadow-2xl opacity-80 sm:p-6 p-4"
         role="tabpanel"
         style="background-image: radial-gradient(circle, rgba(96, 165, 250, 0.6) 1.5px, transparent 1.5px); background-size: 15px 15px;"
         aria-labelledby={selectedTab === "add"
@@ -439,7 +446,10 @@
             >
                 {#if !editingQuestion}
                     <!-- Only show add form if not editing -->
-                    <h2 class="text-2xl font-semibold mb-6 text-center">
+                    <!-- Apply responsive text size: text-xl on small, text-2xl on larger -->
+                    <h2
+                        class="sm:text-2xl text-xl font-semibold mb-6 text-center"
+                    >
                         Add Questions
                     </h2>
                     <form
@@ -456,14 +466,17 @@
                                 id="questionText"
                                 bind:value={newQuestionText}
                                 rows="4"
-                                class="mt-1 block w-full border border-gray-800 rounded-md shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 text-base"
+                                class="mt-1 block w-full border border-gray-800 rounded-md shadow-sm sm:p-3 p-2 focus:ring-blue-500 focus:border-blue-500 text-base"
                                 placeholder="Enter the question text..."
                                 required
                                 aria-required="true"
                             ></textarea>
                         </div>
 
-                        <fieldset class="border border-gray-900 p-4 rounded-md">
+                        <!-- Apply responsive padding: p-3 on small, p-4 on larger -->
+                        <fieldset
+                            class="border border-gray-900 sm:p-4 p-3 rounded-md"
+                        >
                             <legend
                                 class="block text-sm font-medium text-gray-700 mb-2 px-1"
                                 >Answer Options (Exactly 4):</legend
@@ -479,7 +492,7 @@
                                     <input
                                         type="text"
                                         bind:value={newOptions[index]}
-                                        class="flex-grow border border-gray-400 rounded-md shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500 text-base"
+                                        class="flex-grow border border-gray-400 rounded-md shadow-sm sm:p-3 p-2 focus:ring-blue-500 focus:border-blue-500 text-base"
                                         placeholder={`Option ${String.fromCharCode(65 + index)}`}
                                         required
                                         aria-required="true"
@@ -505,9 +518,10 @@
                             {/each}
                         </fieldset>
 
+                        <!-- Apply responsive padding and text size for button -->
                         <button
                             type="submit"
-                            class="w-full px-6 py-3 hover:cursor-pointer bg-blue-600 text-white font-semibold rounded-md shadow-lg hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 text-lg"
+                            class="w-full sm:px-6 sm:py-3 px-4 py-2 hover:cursor-pointer bg-blue-600 text-white font-semibold rounded-md shadow-lg hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 sm:text-lg text-base"
                         >
                             Add Question
                         </button>
@@ -521,19 +535,23 @@
                 role="tabpanel"
                 hidden={selectedTab !== "view"}
             >
-                <h2 class="text-2xl font-semibold mb-6 text-center">
+                <!-- Apply responsive text size: text-xl on small, text-2xl on larger -->
+                <h2 class="sm:text-2xl text-xl font-semibold mb-6 text-center">
                     Questions
                 </h2>
 
                 {#if loading}
-                    <p class="text-center text-gray-600">
+                    <p class="text-center text-gray-600 text-base">
                         Loading questions...
                     </p>
                 {:else if error}
-                    <p class="text-center text-red-600">Error: {error}</p>
+                    <p class="text-center text-red-600 text-base">
+                        Error: {error}
+                    </p>
                 {:else}
                     <!-- Search Bar -->
                     <div class="mb-6 relative">
+                        <!-- Input padding and text size are already reasonable -->
                         <input
                             type="text"
                             bind:value={searchTerm}
@@ -550,11 +568,11 @@
                     </div>
 
                     {#if filteredQuestions.length === 0 && searchTerm === ""}
-                        <p class="text-center text-gray-600">
+                        <p class="text-center text-gray-600 text-base">
                             No questions added yet.
                         </p>
                     {:else if filteredQuestions.length === 0 && searchTerm !== ""}
-                        <p class="text-center text-gray-600">
+                        <p class="text-center text-gray-600 text-base">
                             No questions match your search term "{searchTerm}".
                         </p>
                     {:else}
@@ -565,13 +583,16 @@
                                 {@const originalIndex = questions.findIndex(
                                     (q) => q.id === question.id,
                                 )}
+                                <!-- Apply responsive padding: p-3 on small, p-4 on larger -->
                                 <li
-                                    class="p-4 border border-gray-400 rounded-2xl shadow-xs"
+                                    class="sm:p-4 p-3 border border-gray-400 rounded-2xl shadow-xs"
                                 >
                                     <!-- Clickable Question Header & Edit/Delete Buttons -->
+                                    <!-- Existing flex items-center justify-between works well -->
                                     <div
                                         class="flex items-center justify-between"
                                     >
+                                        <!-- Button acts as the question text -->
                                         <button
                                             class="flex-grow text-left hover:cursor-pointer flex items-center focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                                             on:click={() =>
@@ -585,13 +606,14 @@
                                                 editingQuestion.id !==
                                                     question.id}
                                         >
+                                            <!-- Apply responsive text size: text-base on small, text-lg on larger -->
                                             <p
-                                                class="font-semibold text-gray-800 text-lg leading-relaxed flex-grow"
+                                                class="font-semibold text-gray-800 sm:text-lg text-base leading-relaxed flex-grow pr-2"
                                             >
                                                 <!-- Display original index + 1 -->
                                                 Q{originalIndex + 1} --- {question.text}
                                             </p>
-                                            <!-- Toggle Icon -->
+                                            <!-- Toggle Icon: size h-5 w-5 is fine -->
                                             {#if expandedQuestionIndex === originalIndex}
                                                 <ChevronDown
                                                     class="w-5 h-5 text-gray-600 ml-2 flex-shrink-0"
@@ -606,9 +628,11 @@
                                         <!-- Edit and Delete Buttons -->
                                         {#if !editingQuestion}
                                             <!-- Show only if not already editing something -->
+                                            <!-- Flex container is fine, button sizes are okay -->
                                             <div
                                                 class="flex items-center gap-2 ml-4 flex-shrink-0"
                                             >
+                                                <!-- Button text size text-sm is fine -->
                                                 <button
                                                     class="px-3 py-1 bg-blue-500 hover:cursor-pointer text-white text-sm rounded hover:bg-blue-600 transition duration-200 flex items-center gap-1"
                                                     on:click={() =>
@@ -618,6 +642,7 @@
                                                 >
                                                     <Edit class="w-4 h-4" /> Edit
                                                 </button>
+                                                <!-- Button text size text-sm is fine -->
                                                 <button
                                                     class="px-3 py-1 bg-red-500 text-white hover:cursor-pointer text-sm rounded hover:bg-red-600 transition duration-200 flex items-center gap-1"
                                                     on:click={() =>
@@ -635,9 +660,10 @@
 
                                     <!-- Collapsible Answer Options / Edit Form -->
                                     {#if expandedQuestionIndex === originalIndex}
+                                        <!-- Apply responsive margin-left: ml-2 on small, ml-4 on larger -->
                                         <div
                                             id={`options-${question.id}`}
-                                            class="ml-4 mt-3 border-t border-gray-400 pt-3"
+                                            class="sm:ml-4 ml-2 mt-3 border-t border-gray-400 pt-3"
                                             role="region"
                                             aria-labelledby={`question-${question.id}`}
                                         >
@@ -659,11 +685,12 @@
                                                                 editingQuestion.text
                                                             }
                                                             rows="3"
-                                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500 text-base"
+                                                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm sm:p-3 p-2 focus:ring-blue-500 focus:border-blue-500 text-base"
                                                             required
                                                             aria-required="true"
                                                         ></textarea>
                                                     </div>
+                                                    <!-- Fieldset padding is already handled by the parent li -->
                                                     <fieldset
                                                         class="border border-gray-300 p-4 rounded-md"
                                                     >
@@ -691,7 +718,7 @@
                                                                             oIndex
                                                                         ]
                                                                     }
-                                                                    class="flex-grow border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500 text-base"
+                                                                    class="flex-grow border border-gray-300 rounded-md shadow-sm sm:p-3 p-2 focus:ring-blue-500 focus:border-blue-500 text-base"
                                                                     required
                                                                     aria-required="true"
                                                                 />
@@ -707,7 +734,6 @@
                                                                             editingQuestion.correctAnswerIndex
                                                                         }
                                                                         class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 cursor-pointer"
-                                                                        aria-required="true"
                                                                     />
                                                                     <label
                                                                         for={`edit-correct-option-${question.id}-${oIndex}`}
@@ -718,21 +744,24 @@
                                                             </div>
                                                         {/each}
                                                     </fieldset>
+                                                    <!-- Allow buttons to wrap on small screens -->
                                                     <div
-                                                        class="flex justify-end gap-3"
+                                                        class="flex flex-wrap justify-end gap-3"
                                                     >
+                                                        <!-- Button padding and text size are fine -->
                                                         <button
                                                             type="button"
                                                             on:click={cancelEditing}
-                                                            class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition duration-200 flex items-center gap-1"
+                                                            class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition duration-200 flex items-center gap-1 text-sm"
                                                         >
                                                             <XCircle
                                                                 class="w-4 h-4"
                                                             /> Cancel
                                                         </button>
+                                                        <!-- Button padding and text size are fine -->
                                                         <button
                                                             type="submit"
-                                                            class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition duration-200 flex items-center gap-1"
+                                                            class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition duration-200 flex items-center gap-1 text-sm"
                                                         >
                                                             <Save
                                                                 class="w-4 h-4"
@@ -754,7 +783,7 @@
                                                                 : ''}"
                                                         >
                                                             {#if oIndex === question.correctAnswerIndex}
-                                                                <!-- Correct icon (check circle) -->
+                                                                <!-- Correct icon (check circle): size h-5 w-5 is fine -->
                                                                 <svg
                                                                     xmlns="http://www.w3.org/2000/svg"
                                                                     class="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5"
@@ -768,7 +797,7 @@
                                                                     />
                                                                 </svg>
                                                             {:else}
-                                                                <!-- Default icon (empty circle) -->
+                                                                <!-- Default icon (empty circle): size h-5 w-5 is fine -->
                                                                 <svg
                                                                     xmlns="http://www.w3.org/2000/svg"
                                                                     class="h-5 w-5 text-gray-400 flex-shrink-0 mt-0.5"
@@ -784,6 +813,7 @@
                                                                     />
                                                                 </svg>
                                                             {/if}
+                                                            <!-- Text size text-base is fine -->
                                                             <span
                                                                 class="text-base"
                                                                 >{String.fromCharCode(

@@ -10,9 +10,6 @@ const config = {
     // Note: Adding svelte.config.js to files.ignore will prevent SvelteKit from
     // processing it for routes/components/etc., but will NOT stop the dev server
     // from restarting when this file is changed, as it's a configuration file.
-    files: {
-      ignore: ["iwajoo/src/lib/data/questions.json"],
-    },
   },
 };
 
