@@ -78,20 +78,20 @@
         bind:this={backButton}
         class="{isFixed
             ? 'fixed top-5 left-4 md:left-20 z-50'
-            : 'relative mt-5 ml-4 md:ml-20'} flex self-start p-2 hover:shadow-xl transition duration-300 border border-gray-300 bg-blue-300 rounded-lg w-fit gap-2 text-gray-700 hover:text-blue-600"
+            : 'relative mt-5 ml-4 md:ml-20'} flex self-start p-1 text-sm sm:text-md sm:p-2 hover:shadow-xl transition duration-300 border border-gray-300 bg-blue-300 rounded-lg w-fit gap-2 text-gray-700 hover:text-blue-600"
         href="/"
     >
         <MoveLeft class="w-5 h-5" />
         <p class="text-sm font-medium">Back to Home</p>
     </a>
     <div
-        class="max-w-4xl mx-auto bg-gray-100 border-0 border-gray-100 p-6 sm:p-8 rounded-xl shadow-2xl mt-5 w-full"
+        class="max-w-4xl mx-auto p-6 sm:p-8 border-b-1 border-b-gray-500 mt-5 w-full"
     >
         <h2 class="text-2xl sm:text-3xl font-bold mb-4 text-center">
             Choose your quiz experience
         </h2>
         <p
-            class="text-base sm:text-lg text-gray-600 mb-8 md:mb-10 text-center max-w-2xl mx-auto"
+            class="text-sm sm:text-lg text-gray-600 mb-8 md:mb-10 text-center max-w-2xl mx-auto"
         >
             Select how you want to experience your privacy knowledge challenge
             before we begin!
@@ -108,15 +108,19 @@
                     : ""}
             >
                 <div
-                    class="rounded-full w-16 h-16 flex self-center items-center justify-center mb-4 transition duration-300
+                    class="rounded-full p-4 flex sm:self-center items-center justify-center mb-4 transition duration-300
                     {selectedMode === 'classic'
                         ? 'bg-blue-500 opacity-100'
                         : 'bg-blue-300 opacity-75'}"
                 >
-                    <Brain class="w-10 h-10 text-white" />
+                    <Brain class="sm:w-10 sm:h-10 h-5 w-5 text-white" />
                 </div>
-                <h2 class="text-2xl font-semibold mb-3">Classic Mode</h2>
-                <ul class="text-gray-700 text-left mb-6 space-y-2">
+                <h2 class="text-lg sm:text-2xl font-semibold mb-3">
+                    Classic Mode
+                </h2>
+                <ul
+                    class="text-sm sm:text-md text-gray-700 text-left mb-6 space-y-2"
+                >
                     <li class="flex items-center gap-2">
                         <Check class="w-5 h-5 text-blue-500" />Fun, Playful
                         Experience
@@ -128,7 +132,7 @@
                 </ul>
                 {#if selectedMode === "classic"}
                     <div
-                        class="self-center bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full"
+                        class="absolute top-3 right-3 sm:relative sm:self-center bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full"
                     >
                         Popular choice
                     </div>
@@ -141,19 +145,23 @@
                     : 'opacity-100 bg-blue-100 border-blue-700'}"
                 on:click={() => quizSettings.easy.set(false)}
                 style={selectedMode === "compliance"
-                    ? "background-image: radial-gradient(circle, rgba(96, 165, 250, 0.6) 1.5px, transparent 1.5px); background-size: 20px 20px; "
+                    ? "background-image: radial-gradient(circle, rgba(96, 165, 250, 0.6) 1.5px, transparent 1.5px); background-size: 15px 15px; "
                     : ""}
             >
                 <div
-                    class="rounded-full w-16 h-16 flex self-center items-center justify-center mb-4 transition duration-300
+                    class="rounded-full p-4 flex sm:self-center items-center justify-center mb-4 transition duration-300
                     {selectedMode === 'compliance'
                         ? 'bg-blue-500 opacity-100'
                         : 'bg-blue-300 opacity-75'}"
                 >
-                    <Shield class="w-10 h-10 text-white" />
+                    <Shield class="sm:w-10 sm:h-10 h-5 w-5 text-white" />
                 </div>
-                <h2 class="text-2xl font-semibold mb-3">Compliance Track</h2>
-                <ul class="text-gray-700 text-left mb-6 space-y-2">
+                <h2 class="text-lg sm:text-2xl font-semibold mb-3">
+                    Compliance Track
+                </h2>
+                <ul
+                    class="text-sm sm:text-md text-gray-700 text-left mb-6 space-y-2"
+                >
                     <li class="flex items-center gap-2">
                         <Check class="w-5 h-5 text-green-500" />Serious
                         professional choice
@@ -165,7 +173,7 @@
                 </ul>
                 {#if selectedMode === "compliance"}
                     <div
-                        class="self-center bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full"
+                        class="absolute top-3 right-3 sm:relative sm:self-center bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full"
                     >
                         Professional choice
                     </div>
@@ -174,9 +182,7 @@
         </div>
     </div>
 
-    <div
-        class="max-w-4xl mx-auto bg-gray-100 border-0 border-gray-100 p-6 sm:p-8 rounded-xl shadow-2xl mt-8 w-full"
-    >
+    <div class="max-w-4xl mx-auto p-6 sm:p-8 mt-8 w-full">
         <h2 class="text-2xl sm:text-3xl font-bold mb-4 text-center">
             Choose timing
         </h2>
@@ -188,45 +194,49 @@
         </p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             <button
-                class="border rounded-xl p-6 flex gap-3 items-start shadow-sm hover:shadow-md transition h-fit duration-300 cursor-pointer relative overflow-hidden
+                class="border rounded-xl p-4 sm:p-6 flex sm:flex-row flex-col gap-4 sm:gap-3 items-start shadow-sm hover:shadow-md transition h-fit duration-300 cursor-pointer relative overflow-hidden
                     {selectedTiming !== 'timed'
                     ? 'opacity-90 border-gray-300 bg-gray-100'
                     : 'opacity-100 bg-blue-100 border-blue-700'}"
                 on:click={() => quizSettings.noTimeLimit.set(false)}
             >
                 <div
-                    class="rounded-full w-14 h-14 flex-shrink-0 flex items-center justify-center transition duration-300
+                    class="rounded-full p-3 flex-shrink-0 flex items-center justify-center transition duration-300
                         {selectedTiming === 'timed'
                         ? 'bg-blue-500 opacity-100'
                         : 'bg-blue-300 opacity-75'}"
                 >
-                    <Clock class="w-8 h-8 text-white" />
+                    <Clock class="w-5 h-5 sm:w-8 sm:h-8 text-white" />
                 </div>
                 <div class="flex flex-col gap-1">
-                    <h3 class="text-2xl font-semibold text-left">Timed Quiz</h3>
-                    <p class="text-gray-700 text-left">
+                    <h3 class="text-lg sm:text-2xl font-semibold text-left">
+                        Timed Quiz
+                    </h3>
+                    <p class="text-sm sm:text-md text-gray-700 text-left">
                         Time limit per question.
                     </p>
                 </div>
             </button>
             <button
-                class="border rounded-xl p-6 flex gap-3 items-start shadow-sm hover:shadow-md transition h-fit duration-300 cursor-pointer relative overflow-hidden
+                class="border rounded-xl p-3 sm:p-6 flex sm:flex-row flex-col gap-4 sm:gap-3 items-start shadow-sm hover:shadow-md transition h-fit duration-300 cursor-pointer relative overflow-hidden
                     {selectedTiming !== 'free'
                     ? 'opacity-90 border-gray-300 bg-gray-100'
                     : 'opacity-100 bg-blue-100 border-blue-700'}"
                 on:click={() => quizSettings.noTimeLimit.set(true)}
             >
                 <div
-                    class="rounded-full w-14 h-14 flex-shrink-0 flex items-center justify-center transition duration-300
+                    class="rounded-full p-3 flex-shrink-0 flex items-center justify-center transition duration-300
                         {selectedTiming === 'free'
                         ? 'bg-blue-500 opacity-100'
                         : 'bg-blue-300 opacity-75'}"
                 >
-                    <Infinity class="w-8 h-8 text-white" />
+                    <Infinity class="w-5 h-5 sm:w-8 sm:h-8 text-white" />
                 </div>
                 <div class="flex flex-col gap-1">
-                    <h3 class="text-2xl font-semibold text-left">Free Mode</h3>
-                    <p class="text-gray-700 text-left">
+                    <h3 class="text-lg sm:text-2xl font-semibold text-left">
+                        Free Mode
+                    </h3>
+                    <p class="text-sm sm:text-md text-gray-700 text-left">
                         No time limit, learn at your pace.
                     </p>
                 </div>
@@ -234,9 +244,10 @@
         </div>
     </div>
 
-    <button
-        class="mt-10 px-6 py-3 sm:px-8 sm:py-4 bg-blue-600 text-white text-lg sm:text-xl font-bold rounded-xl shadow-lg hover:bg-blue-700 transition duration-300"
+    <a
+        class="sm:mt-10 px-4 py-2 sm:px-8 sm:py-4 bg-blue-600 text-white text-lg sm:text-xl font-bold rounded-xl shadow-lg hover:bg-blue-700 transition duration-300"
+        href="/quiz"
     >
         Start Quiz
-    </button>
+    </a>
 </div>

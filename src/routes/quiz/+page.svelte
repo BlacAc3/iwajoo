@@ -318,14 +318,14 @@
             class="flex items-center gap-2 p-1 px-3 rounded-full bg-white border border-gray-400 hover:border-gray-700 hover:shadow-lg text-blue-600 hover:text-blue-800 transition-all duration-300"
         >
             <MoveLeft class="w-5 h-5" />
-            <span class="text-sm font-medium">Quiz Settings</span>
+            <span class="text-xs sm:text-sm font-medium">Quiz Settings</span>
         </a>
         <a
             href="/"
             class="flex items-center gap-2 p-1 px-3 rounded-full bg-white border border-gray-400 hover:border-gray-700 hover:shadow-lg text-blue-600 hover:text-blue-800 transition-all duration-300"
         >
             <Home class="w-5 h-5" />
-            <span class="text-sm font-medium">Back to Home</span>
+            <span class="text-xs sm:text-sm font-medium">Back to Home</span>
         </a>
     </div>
 
@@ -394,12 +394,14 @@
             </div>
         {:else if currentQuestion}
             <!-- Question Number -->
-            <div class="flex items-center justify-between pb-4">
-                <p class="font-bold text-xl text-gray-800">
+            <div
+                class="flex flex-col items-start sm:flex-row sm:items-center justify-between pb-4"
+            >
+                <p class="font-bold text-sm sm:text-xl text-gray-800">
                     Question {currentQuestionIndex + 1} of {selectedQuestions.length}
                 </p>
                 <div
-                    class="rounded-full p-1 px-3 font-bold text-sm bg-blue-400"
+                    class="rounded-full px-1 sm:p-1 sm:px-3 sm:font-bold text-[10px] sm:text-sm bg-blue-400"
                 >
                     Multiple Choice
                 </div>
@@ -410,9 +412,9 @@
                     <div
                         class="flex items-center justify-between text-lg font-semibold text-gray-700"
                     >
-                        <div class="text-sm">Time Remaining</div>
+                        <div class="text-xs sm:text-sm">Time Remaining</div>
                         <span
-                            class={`text-sm ${
+                            class={`text-xs sm:text-sm ${
                                 timerValue <= 5 && timerValue > 0
                                     ? "text-red-600 animate-pulse" // Add condition > 0 for pulse
                                     : timerValue <= 0
@@ -438,12 +440,14 @@
             {/if}
 
             <!-- Question Text -->
-            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
+            <h2
+                class="mt-3 sm:mt-auto text-lg sm:text-2xl font-semibold text-gray-800 mb-6"
+            >
                 {currentQuestion.text}
             </h2>
 
             <!-- Options -->
-            <div class="flex flex-col gap-4 mb-6">
+            <div class="flex flex-col gap-4 mb-4 sm:mb-6">
                 {#each currentQuestion.options as option, index}
                     {@const isSelected = selectedAnswerIndex === index}
                     {@const isCorrectAnswer =
@@ -456,7 +460,7 @@
                         selectedAnswerIndex !== -1}
 
                     <button
-                        class="border rounded-lg p-4 text-left transition duration-200
+                        class="border rounded-lg p-3 text-left text-md md:text-lg transition duration-200
                         {answerSubmitted
                             ? isCorrectAnswer
                                 ? 'border-green-500 bg-green-100 text-green-800 shadow-md cursor-default'
@@ -522,7 +526,7 @@
                     <div class="text-center">
                         <button
                             on:click={nextQuestion}
-                            class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition duration-200"
+                            class="sm:px-6 sm:py-3 p-6 sm:text-md bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition duration-200"
                         >
                             {currentQuestionIndex < selectedQuestions.length - 1
                                 ? "Next Question"
@@ -544,7 +548,7 @@
                     <button
                         on:click={nextQuestion()}
                         disabled={selectedAnswerIndex === null}
-                        class="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow disabled:opacity-50 disabled:cursor-not-allowed hover:bg-green-700 transition duration-200"
+                        class="sm:px-6 sm:py-3 px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow disabled:opacity-50 disabled:cursor-not-allowed hover:bg-green-700 transition duration-200"
                     >
                         Next Question
                     </button>
