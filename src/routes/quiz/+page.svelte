@@ -337,7 +337,7 @@
             <!-- Quiz Complete State -->
             <div class="text-center">
                 <!-- Big bold score at the top -->
-                <p class="text-4xl sm:text-5xl font-bold text-black mb-6">
+                <p class="text-3xl sm:text-5xl font-bold text-black mb-6">
                     {score} / {selectedQuestions.length}
                 </p>
 
@@ -379,13 +379,13 @@
                 <div class="flex justify-center gap-4">
                     <button
                         on:click={startQuiz}
-                        class="px-6 py-3 bg-blue-600 hover:cursor-pointer text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition duration-200"
+                        class="px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-md bg-blue-600 hover:cursor-pointer text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition duration-200"
                     >
                         Play Again
                     </button>
                     <a
                         href="/"
-                        class="px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg shadow hover:bg-gray-200 transition duration-200 flex items-center"
+                        class="px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-md border border-gray-300 text-gray-700 font-semibold rounded-lg shadow hover:bg-gray-200 transition duration-200 flex items-center"
                     >
                         <MoveLeft class="w-4 h-4 mr-2" />
                         Go Home
@@ -526,7 +526,7 @@
                     <div class="text-center">
                         <button
                             on:click={nextQuestion}
-                            class="sm:px-6 sm:py-3 p-6 sm:text-md bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition duration-200"
+                            class="sm:px-6 sm:py-3 px-4 py-2 sm:text-md bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition duration-200"
                         >
                             {currentQuestionIndex < selectedQuestions.length - 1
                                 ? "Next Question"
