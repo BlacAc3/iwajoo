@@ -1,5 +1,6 @@
 <script>
     import { onMount } from "svelte";
+    import { _readQuestions as getQuestions } from "../admin/questions/+server.js"; // Assuming _readQuestions and _writeQuestions are in the same directory's +server.js
     // Importing chevron icons for toggle functionality, save, cancel, edit, and delete icons
     import {
         ChevronDown,
@@ -52,22 +53,7 @@
         editingQuestion = null;
 
         try {
-            // Assuming a SvelteKit endpoint exists at /admin/questions
-            // and it returns an array of question objects, each with an 'id'.
-            const response = await fetch("/admin/questions");
-            if (response.ok) {
-                const data = await response.json();
-                questions = data; // Update the questions array
-            } else {
-                // Handle non-OK responses
-                const errBody = await response.text();
-                console.error(
-                    "Failed to load questions:",
-                    response.status,
-                    errBody,
-                );
-                error = `Failed to load questions: ${response.status} ${response.statusText}`;
-            }
+            questions = await getQuestions();
         } catch (err) {
             console.error("Error fetching questions:", err);
             error = `An error occurred while fetching questions: ${err.message}`;
@@ -100,13 +86,16 @@
 
         try {
             // Send the new question to the backend
-            const response = await fetch("/admin/questions", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
+            const response = await fetch(
+                "https://n8n-service-sfwl.onrender.com/webhook-test/6d7ba488-c384-4c7f-80b6-e66c4a2e3606",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(questionToAdd),
                 },
-                body: JSON.stringify(questionToAdd),
-            });
+            );
 
             if (response.ok) {
                 // If the backend successfully added and saved, refresh the list
@@ -206,7 +195,7 @@
             // Send the updated question to the backend using PUT with the question ID
             // Assumes a PUT endpoint exists at /admin/questions/:id
             const response = await fetch(
-                `/admin/questions/${questionToSave.id}`,
+                `https://n8n-service-sfwl.onrender.com/webhook/6d7ba488-c384-4c7f-80b6-e66c4a2e3606?questionId=${questionToSave.id}`,
                 {
                     method: "PUT",
                     headers: {
@@ -255,9 +244,12 @@
         try {
             // Send the DELETE request to the backend with the question ID
             // Assumes a DELETE endpoint exists at /admin/questions/:id
-            const response = await fetch(`/admin/questions/${id}`, {
-                method: "DELETE",
-            });
+            const response = await fetch(
+                `https://n8n-service-sfwl.onrender.com/webhook/6d7ba488-c384-4c7f-80b6-e66c4a2e3606?questionId=${id}`,
+                {
+                    method: "DELETE",
+                },
+            );
 
             if (response.ok) {
                 // If the backend successfully deleted, refresh the list
@@ -615,7 +607,7 @@
                                                 class="font-semibold text-gray-800 sm:text-lg text-base leading-relaxed flex-grow pr-2"
                                             >
                                                 <!-- Display original index + 1 -->
-                                                Q{originalIndex + 1} --- {question.text}
+                                                {originalIndex + 1}. {question.text}
                                             </p>
                                             <!-- Toggle Icon: size h-5 w-5 is fine -->
                                             {#if expandedQuestionIndex === originalIndex}

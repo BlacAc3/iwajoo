@@ -1,67 +1,58 @@
 import { json, error as kitError } from "@sveltejs/kit";
 import fs from "fs/promises"; // Use promises version for async filesystem operations
 import path from "path";
-import { fileURLToPath } from "url";
 import { v4 as uuidv4 } from "uuid"; // Import uuid to generate unique IDs
 // import { dev } from '$app/environment'; // Not used in this endpoint logic, but good to know it exists
 
 // Resolve the path to the questions.json file
 // __filename is the path to the current module file (`src/routes/api/questions/+server.js`)
-const __filename = fileURLToPath(import.meta.url);
-// __dirname is the directory containing the current module file (`src/routes/api/questions`)
-const __dirname = path.dirname(__filename);
 
 // Assuming questions.json is intended to be stored outside of the public directory
 // and preferably somewhere like src/lib/data or similar, relative to the project root.
 // We navigate up from the current directory to the project root, then down to src/lib/data.
 // __dirname = project-root/src/routes/api/questions
 // path.resolve(__dirname, '../../../../src/lib/data/questions.json') resolves to project-root/src/lib/data/questions.json
-const QUESTIONS_FILE_PATH = path.resolve(
-  __dirname,
-  "../../../../src/lib/data/questions.json",
-);
 
 // Helper function to read questions from the file
 export async function _readQuestions() {
   try {
-    const data = await fs.readFile(QUESTIONS_FILE_PATH, "utf-8");
-    // If the file is empty or only whitespace, return an empty array
-    if (!data.trim()) {
-      return [];
-    }
-    return JSON.parse(data);
-  } catch (err) {
-    // If the file doesn't exist, return an empty array - this is expected initially
-    if (err.code === "ENOENT") {
-      console.warn(
-        `Questions file not found at ${QUESTIONS_FILE_PATH}. Returning empty array.`,
+    const response = await fetch(
+      "https://n8n-service-sfwl.onrender.com/webhook/6d7ba488-c384-4c7f-80b6-e66c4a2e3606",
+    );
+
+    if (!response.ok) {
+      console.error(
+        "Error fetching questions from API:",
+        response.status,
+        response.statusText,
       );
-      return [];
+      throw kitError(500, "Failed to fetch questions data from API");
     }
-    // For other errors (e.g., invalid JSON), log and throw a server error
-    console.error("Error reading questions file:", err);
-    // Use kitError to return a proper SvelteKit error response
-    throw kitError(500, "Failed to read questions data");
+
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.error("Error fetching or parsing questions data:", err);
+    throw kitError(500, "Failed to fetch or parse questions data from API");
   }
 }
 
 // Helper function to write questions to the file
 export async function _writeQuestions(questions) {
-  try {
-    // Ensure the directory exists before writing the file
-    const dir = path.dirname(QUESTIONS_FILE_PATH);
-    await fs.mkdir(dir, { recursive: true }); // recursive: true creates parent directories if they don't exist
-
-    // Write the questions array to the JSON file, formatted with 2 spaces for readability
-    await fs.writeFile(
-      QUESTIONS_FILE_PATH,
-      JSON.stringify(questions, null, 2),
-      "utf-8",
-    );
-  } catch (err) {
-    console.error("Error writing questions file:", err);
-    throw kitError(500, "Failed to save questions data");
-  }
+  // try {
+  //   // Ensure the directory exists before writing the file
+  //   const dir = path.dirname(QUESTIONS_FILE_PATH);
+  //   await fs.mkdir(dir, { recursive: true }); // recursive: true creates parent directories if they don't exist
+  //   // Write the questions array to the JSON file, formatted with 2 spaces for readability
+  //   await fs.writeFile(
+  //     QUESTIONS_FILE_PATH,
+  //     JSON.stringify(questions, null, 2),
+  //     "utf-8",
+  //   );
+  // } catch (err) {
+  //   console.error("Error writing questions file:", err);
+  //   throw kitError(500, "Failed to save questions data");
+  // }
 }
 
 // --- Endpoint Handlers ---

@@ -13,7 +13,8 @@
     // Import the object containing the stores
     import { quizSettings } from "$lib/stores/quizSettings.svelte.js";
     // Import the questions data
-    import questionsData from "$lib/data/questions.json";
+
+    import { _readQuestions as getQuestions } from "../admin/questions/+server.js"; // Assuming _readQuestions and _writeQuestions are in the same directory's +server.js
 
     // Destructure the individual stores from the imported object
     // Note: '$' prefix is used in reactive declarations or HTML to access the store's value
@@ -25,6 +26,8 @@
 
     // --- Quiz State Variables ---
     let selectedQuestions = []; // Array to hold the selected questions for this quiz instance
+    let questionsData = [];
+    let questionsLoading = true; // Add a loading state
     let currentQuestionIndex = 0; // Index of the currently displayed question
     // selectedAnswerIndex: null = no selection, index = user selection, -1 = timed out
     let selectedAnswerIndex = null;
@@ -237,7 +240,13 @@
     }
 
     // --- Lifecycle Hooks ---
-    onMount(() => {
+    onMount(async () => {
+        try {
+            questionsData = await getQuestions();
+        } finally {
+            questionsLoading = false;
+        }
+
         // Start the quiz when the component mounts
         startQuiz();
 
@@ -391,6 +400,12 @@
                         Go Home
                     </a>
                 </div>
+            </div>
+        {:else if questionsLoading}
+            <!-- Loading State -->
+            <div class="text-center text-gray-600">
+                <p>Loading questions...</p>
+                <!-- Optional: Add a spinner -->
             </div>
         {:else if currentQuestion}
             <!-- Question Number -->
@@ -546,18 +561,18 @@
                 <!-- Button to submit answer (only visible before submission) -->
                 <div class="text-center">
                     <button
-                        on:click={nextQuestion()}
+                        on:click={checkAnswer}
                         disabled={selectedAnswerIndex === null}
                         class="sm:px-6 sm:py-3 px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow disabled:opacity-50 disabled:cursor-not-allowed hover:bg-green-700 transition duration-200"
                     >
-                        Next Question
+                        Submit Answer
                     </button>
                 </div>
             {/if}
         {:else}
             <!-- Loading or No Questions State -->
             <div class="text-center text-gray-600">
-                {#if questionsData.length === 0}
+                {#if questionsData && questionsData.length === 0}
                     <p>
                         No questions available. Please add questions via the
                         admin page.
