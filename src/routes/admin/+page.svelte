@@ -482,21 +482,25 @@
                                 >Answer Options (Exactly 4):</legend
                             >
                             {#each newOptions as option, index}
-                                <div class="flex items-center gap-3 mb-3">
-                                    <span
-                                        class="flex-shrink-0 text-gray-600 font-medium w-4"
-                                        >{String.fromCharCode(
-                                            65 + index,
-                                        )}.</span
-                                    >
-                                    <input
-                                        type="text"
-                                        bind:value={newOptions[index]}
-                                        class="flex-grow border border-gray-400 rounded-md shadow-sm sm:p-3 p-2 focus:ring-blue-500 focus:border-blue-500 text-base"
-                                        placeholder={`Option ${String.fromCharCode(65 + index)}`}
-                                        required
-                                        aria-required="true"
-                                    />
+                                <div
+                                    class="flex items-start sm:items-center flex-col sm:flex-row gap-3 mb-8 sm:mb-3"
+                                >
+                                    <div class="flex items-center">
+                                        <span
+                                            class="flex-shrink-0 text-gray-600 font-medium w-4"
+                                            >{String.fromCharCode(
+                                                65 + index,
+                                            )}.</span
+                                        >
+                                        <input
+                                            type="text"
+                                            bind:value={newOptions[index]}
+                                            class="flex-grow border border-gray-400 rounded-md shadow-sm sm:p-3 p-2 focus:ring-blue-500 focus:border-blue-500 text-base"
+                                            placeholder={`Option ${String.fromCharCode(65 + index)}`}
+                                            required
+                                            aria-required="true"
+                                        />
+                                    </div>
                                     <div
                                         class="flex items-center flex-shrink-0"
                                     >
