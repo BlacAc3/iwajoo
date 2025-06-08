@@ -16,9 +16,11 @@
 
     // Note: The 'quizSettings' object contains the 'easy' store, which determines the mode.
     // 'true' for easy means classic, 'false' means compliance.
+    // We use the '$' prefix on the individual destructured store 'easy'.
     $: selectedMode = $easy ? "classic" : "compliance";
 
     // Reactive declaration for selected timing, reacting to the 'noTimeLimit' store.
+    // We use the '$' prefix on the individual destructured store 'noTimeLimit'.
     $: selectedTiming = $noTimeLimit ? "free" : "timed";
 
     let isFixed = false;
@@ -232,10 +234,9 @@
         </div>
     </div>
 
-    <a
+    <button
         class="mt-10 px-6 py-3 sm:px-8 sm:py-4 bg-blue-600 text-white text-lg sm:text-xl font-bold rounded-xl shadow-lg hover:bg-blue-700 transition duration-300"
-        href="/quiz"
     >
         Start Quiz
-    </a>
+    </button>
 </div>
