@@ -232,9 +232,10 @@
         </div>
     </div>
 
-    <button
+    <a
         class="mt-10 px-6 py-3 sm:px-8 sm:py-4 bg-blue-600 text-white text-lg sm:text-xl font-bold rounded-xl shadow-lg hover:bg-blue-700 transition duration-300"
+        href="/quiz"
     >
         Start Quiz
-    </button>
+    </a>
 </div>
